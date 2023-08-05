@@ -16,6 +16,10 @@ class Board:
         self.game_frame = self.create_game_frame()
         self.footer_frame = self.create_footer_frame()
 
+        self.score_label = self.create_score_label()
+        self.hi_score_label = self.create_hi_score_label()
+        self.restart_btn = self.create_restart_btn()
+
     # ----------------------------- Frames ------------------------------- #
     def create_game_frame(self):
         game_frame = tk.Frame(self.root, width=PLAY_WIDTH, height=PLAY_HEIGHT, bg=PLAYFIELD_GRAY)
@@ -26,6 +30,24 @@ class Board:
         footer = tk.Frame(self.root, width=FOOTER_WIDTH, height=FOOTER_HEIGHT, bg=FOOTER_GRAY)
         footer.pack(anchor=tk.CENTER, expand=True)
         return footer
+
+    # ------------------------- Labels & Buttons -------------------------- #
+
+    def create_score_label(self):
+        score_label = tk.Label(self.footer_frame, text="Score: 2", width=32, height=1, font=LABEL_FONT)
+        score_label.grid(row=0, column=0, sticky=tk.W, padx=4, ipady=6, pady=3)
+        return score_label
+
+    def create_hi_score_label(self):
+        hi_score_label = tk.Label(self.footer_frame, text="High Score: 1", width=32, height=1, font=LABEL_FONT)
+        hi_score_label.grid(row=1, column=0, sticky=tk.W, padx=4, ipady=6, pady=3)
+        return hi_score_label
+
+    def create_restart_btn(self):
+        restart_btn = tk.Button(self.footer_frame, text="Restart", width=5, height=1, font=LABEL_FONT)
+        restart_btn.grid(row=0, column=1, rowspan=2, sticky=tk.E, padx=3, pady=2, ipadx=6, ipady=12)
+        return restart_btn
+
 
 
 # Press the green button in the gutter to run the script.
