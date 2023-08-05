@@ -20,6 +20,8 @@ class Board:
         self.hi_score_label = self.create_hi_score_label()
         self.restart_btn = self.create_restart_btn()
 
+        self.board_matrix = self.create_board_matrix()
+
     # ----------------------------- Frames ------------------------------- #
     def create_game_frame(self):
         game_frame = tk.Frame(self.root, width=PLAY_WIDTH, height=PLAY_HEIGHT, bg=PLAYFIELD_GRAY)
@@ -48,6 +50,11 @@ class Board:
         restart_btn.grid(row=0, column=1, rowspan=2, sticky=tk.E, padx=3, pady=2, ipadx=6, ipady=12)
         return restart_btn
 
+    # ------------------------ Matrix Values & Cells ------------------------- #
+    def create_board_matrix(self):
+        matrix = [[0 for j in range(4)] for i in range(4)]
+        print(f"The starting matrix is: {matrix}")
+        return matrix
 
 
 # Press the green button in the gutter to run the script.
