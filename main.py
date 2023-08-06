@@ -71,10 +71,15 @@ class Board:
         print(f"choose_rand_index result: {random_index}")
         return random_index
 
+    def draw_to_board(self, row, col, value):
+        self.board_squares[row][col].config(text=value)
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     board = Board()
+    board.choose_random_index()
+    board.draw_to_board(1, 1, 69)
     board.root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
