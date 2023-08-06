@@ -74,12 +74,23 @@ class Board:
     def draw_to_board(self, row, col, value):
         self.board_squares[row][col].config(text=value)
 
+    def populate_vacant_square(self):
+        # replaces matrix 0 with 2 or 4 and draws value to corresponding board location
+        rand_ind = self.choose_random_index()
+        rand_val = random.choice([2, 4])
+        if self.board_matrix[rand_ind[0]][rand_ind[1]] == 0:
+            self.board_matrix[rand_ind[0]][rand_ind[1]] = rand_val
+            self.draw_to_board(rand_ind[0], rand_ind[1], str(rand_val))
+        else:
+            self.populate_vacant_square()
+        print(f"The new matrix values are {self.board_matrix}")
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     board = Board()
     board.choose_random_index()
-    board.draw_to_board(1, 1, 69)
+    board.populate_vacant_square()
     board.root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
