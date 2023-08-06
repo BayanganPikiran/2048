@@ -85,12 +85,17 @@ class Board:
             self.populate_vacant_square()
         print(f"The new matrix values are {self.board_matrix}")
 
+    def start_with_two(self):
+        for i in range(2):
+            self.populate_vacant_square()
+
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     board = Board()
     board.choose_random_index()
-    board.populate_vacant_square()
+    board.start_with_two()
     board.root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
