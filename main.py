@@ -21,6 +21,15 @@ class Board:
         self.restart_btn = self.create_restart_btn()
 
         self.board_matrix = self.create_board_matrix()
+        self.board_squares = []
+        for i in range(4):
+            rows = []
+            for j in range(4):
+                tile = tk.Label(self.game_frame, text=" ", font=LABEL_FONT, bg=CELL_LT_BLUE,
+                                width=10, height=5, relief=tk.SOLID, borderwidth=2)
+                tile.grid(row=i, column=j, padx=2, pady=1)
+                rows.append(tile)
+            self.board_squares.append(rows)
 
     # ----------------------------- Frames ------------------------------- #
     def create_game_frame(self):
@@ -59,6 +68,7 @@ class Board:
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    board = Board()
+    board.root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
