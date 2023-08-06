@@ -65,6 +65,12 @@ class Board:
         print(f"The starting matrix is: {matrix}")
         return matrix
 
+    def choose_random_index(self):
+        index_list = [0, 1, 2, 3]
+        random_index = random.sample(index_list, 2)
+        print(f"choose_rand_index result: {random_index}")
+        return random_index
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
