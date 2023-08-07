@@ -122,14 +122,23 @@ class Board:
                         mx[i][j + 1] = 0
         print(f"The compressed matrix is: {mx}")
 
+    def transpose_matrix(self, matrix):
+        tp_matrix = np.transpose(matrix).tolist()
+        print(f"This is the matrix: {matrix}")
+        print(f"This is the transposed matrix: {tp_matrix}")
+
+    def reverse_matrix(self, matrix):
+        r_matrix = np.flip(matrix).tolist()
+        print(f"This is the matrix: {matrix}")
+        print(f"This is the transposed matrix: {r_matrix}")
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     board = Board()
     board.choose_random_index()
     board.start_with_two()
-    # board.squeeze_matrix(sample_matrix_4)
-    board.compress(sample_matrix)
+    board.reverse_matrix(sample_matrix)
     board.root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
