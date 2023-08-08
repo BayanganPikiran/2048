@@ -5,11 +5,13 @@ import numpy as np
 
 sample_matrix = [[2, 2, 4, 8], [8, 8, 16, 16], [4, 0, 4, 4], [32, 32, 64, 64]]
 
-sample_matrix_2 = [[0, 3, 1, 0], [1, 0, 0, 8], [0, 0, 9, 0], [0, 0, 2, 4]]
+sample_matrix_2 = [[2, 0, 2, 0], [0, 8, 0, 8], [0, 0, 16, 16], [32, 0, 0, 32]]
 
-sample_matrix_3 = [[0, 0, 0, 1], [0, 0, 0, 4], [0, 0, 0, 3], [0, 0, 0, 4]]
+sample_matrix_3 = [[2, 2, 4, 8], [16, 0, 16, 32], [32, 32, 0, 64], [64, 0, 0, 64]]
 
 sample_matrix_4 = [[0, 0, 0, 5], [0, 3, 0, 8], [0, 0, 2, 0], [1, 2, 0, 4]]
+
+score = 0
 
 
 class Board:
@@ -27,6 +29,8 @@ class Board:
         self.score_label = self.create_score_label()
         self.hi_score_label = self.create_hi_score_label()
         self.restart_btn = self.create_restart_btn()
+
+        self.score = 0
 
         self.board_matrix = self.create_board_matrix()
         self.board_squares = []
@@ -111,7 +115,7 @@ class Board:
                                 mx[row][col + 1] = 0
         # print(f"This is our new matrix: {mx}")
 
-    def compress(self, matrix):
+    def compress_matrix(self, matrix):
         self.squeeze_matrix(matrix)
         mx = matrix
         for i in range(4):
@@ -134,24 +138,44 @@ class Board:
 
     def merge_cells(self, matrix):
         mx = matrix
-        score = 0
         print(f"This is the starting matrix: {matrix}")
         for i in range(4):
             for j in range(3):
                 if mx[i][j] == mx[i][j + 1]:
                     mx[i][j] *= 2
                     mx[i][j + 1] = 0
-                    score += mx[i][j]
+                    self.score += mx[i][j]
         print(f"This is the new matrix: {mx}")
-        print(f"This is the new score: {score}")
+        print(f"This is the new score: {self.score}")
+
+    def can_merge(self, matrix):
+        can_merge = True
+        matrix = mx
+        for i in range(4):
+            for j in range(3):
+                if mx[i][j] != mx[i][j + 1]:
+                    return False
+
+    def take_a_turn(self, matrix):
+        mx = matrix
+        self.compress_matrix(mx)
+        can_continue = True
+        while can_continue:
+            for i in range(4):
+                for j in range(3):
+                    if mx[i][j] == mx[i][j + 1]:
+                        self.merge_cells(mx)
+                        self.compress_matrix(mx)
+                    else:
+                        can_continue = False
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     board = Board()
-    board.choose_random_index()
-    board.start_with_two()
-    board.merge_cells(sample_matrix)
+    # board.choose_random_index()
+    # board.start_with_two()
+    board.take_a_turn(sample_matrix_3)
     board.root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
