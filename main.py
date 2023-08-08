@@ -3,7 +3,7 @@ import tkinter as tk
 from constants import *
 import numpy as np
 
-sample_matrix = [[0, 0, 2, 0], [1, 2, 0, 4], [0, 0, 0, 5], [0, 3, 0, 8]]
+sample_matrix = [[2, 2, 4, 8], [8, 8, 16, 16], [4, 0, 4, 4], [32, 32, 64, 64]]
 
 sample_matrix_2 = [[0, 3, 1, 0], [1, 0, 0, 8], [0, 0, 9, 0], [0, 0, 2, 4]]
 
@@ -132,13 +132,26 @@ class Board:
         print(f"This is the matrix: {matrix}")
         print(f"This is the transposed matrix: {r_matrix}")
 
+    def merge_cells(self, matrix):
+        mx = matrix
+        score = 0
+        print(f"This is the starting matrix: {matrix}")
+        for i in range(4):
+            for j in range(3):
+                if mx[i][j] == mx[i][j + 1]:
+                    mx[i][j] *= 2
+                    mx[i][j + 1] = 0
+                    score += mx[i][j]
+        print(f"This is the new matrix: {mx}")
+        print(f"This is the new score: {score}")
+
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     board = Board()
     board.choose_random_index()
     board.start_with_two()
-    board.reverse_matrix(sample_matrix)
+    board.merge_cells(sample_matrix)
     board.root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
