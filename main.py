@@ -103,51 +103,56 @@ class Board:
         for i in range(2):
             self.populate_vacant_square()
 
+    def update_board_squares(self):
+        for i in range(4):
+            for j in range(4):
+                if self.board_matrix[i][j] == 0:
+                    self.draw_to_board(i, j, ' ')
+                else:
+                    self.draw_to_board(i, j, self.board_matrix[i][j])
+
     # ------------------------ Movement Configuration ------------------------- #
 
-    def squeeze_matrix(self, matrix):
-        mx = matrix
+    def squeeze_matrix(self):
         for i in range(4):
             for j in range(3):
-                while mx[i][j] == 0 and mx[i][j + 1] != 0:
+                while self.board_matrix[i][j] == 0 and self.board_matrix[i][j + 1] != 0:
                     for row in range(4):
                         for col in range(3):
-                            if mx[row][col] == 0:
-                                mx[row][col] = mx[row][col + 1]
-                                mx[row][col + 1] = 0
+                            if self.board_matrix[row][col] == 0:
+                                self.board_matrix[row][col] = self.board_matrix[row][col + 1]
+                                self.board_matrix[row][col + 1] = 0
         # print(f"This is our new matrix: {mx}")
 
-    def compress_matrix(self, matrix):
-        self.squeeze_matrix(matrix)
-        mx = matrix
+    def compress_matrix(self):
+        self.squeeze_matrix()
         for i in range(4):
             for j in range(3):
-                while mx[i][j] == 0 and mx[i][j + 1] != 0:
-                    if mx[i][j] == 0:
-                        mx[i][j] = mx[i][j + 1]
-                        mx[i][j + 1] = 0
-        print(f"The compressed matrix is: {mx}")
+                while self.board_matrix[i][j] == 0 and self.board_matrix[i][j + 1] != 0:
+                    if self.board_matrix[i][j] == 0:
+                        self.board_matrix[i][j] = self.board_matrix[i][j + 1]
+                        self.board_matrix[i][j + 1] = 0
+        print(f"The compressed matrix is: {self.board_matrix}")
 
-    def transpose_matrix(self, matrix):
-        tp_matrix = np.transpose(matrix).tolist()
-        print(f"This is the matrix: {matrix}")
+    def transpose_matrix(self):
+        tp_matrix = np.transpose(self.board_matrix).tolist()
+        print(f"This is the matrix: {self.board_matrix}")
         print(f"This is the transposed matrix: {tp_matrix}")
 
-    def reverse_matrix(self, matrix):
-        r_matrix = np.flip(matrix).tolist()
-        print(f"This is the matrix: {matrix}")
+    def reverse_matrix(self):
+        r_matrix = np.flip(self.board_matrix).tolist()
+        print(f"This is the matrix: {self.board_matrix}")
         print(f"This is the transposed matrix: {r_matrix}")
 
-    def merge_cells(self, matrix):
-        mx = matrix
-        print(f"This is the starting matrix: {matrix}")
+    def merge_cells(self):
+        print(f"This is the starting matrix: {self.board_matrix}")
         for i in range(4):
             for j in range(3):
-                if mx[i][j] == mx[i][j + 1]:
-                    mx[i][j] *= 2
-                    mx[i][j + 1] = 0
-                    self.score += mx[i][j]
-        print(f"This is the new matrix: {mx}")
+                if self.board_matrix[i][j] == self.board_matrix[i][j + 1]:
+                    self.board_matrix[i][j] *= 2
+                    self.board_matrix[i][j + 1] = 0
+                    self.score += self.board_matrix[i][j]
+        print(f"This is the new matrix: {self.board_matrix}")
         print(f"This is the new score: {self.score}")
 
     def can_merge(self, matrix):
@@ -158,19 +163,19 @@ class Board:
                 if mx[i][j] != mx[i][j + 1]:
                     return False
 
-    def take_a_turn(self, matrix):
-        mx = matrix
-        self.compress_matrix(mx)
+    def take_a_turn(self):
+        self.compress_matrix()
         can_continue = True
         while can_continue:
             for i in range(4):
                 for j in range(3):
-                    if mx[i][j] == mx[i][j + 1]:
-                        self.merge_cells(mx)
-                        self.compress_matrix(mx)
+                    if self.board_matrix[i][j] == self.board_matrix[i][j + 1]:
+                        self.merge_cells()
+                        self.compress_matrix()
                     else:
                         can_continue = False
         self.populate_vacant_square()
+        self.update_board_squares()
 
     def link_keys(self, event):
         pressed_key = event.keysym
@@ -179,35 +184,13 @@ class Board:
         if pressed_key == 'Down':
             pass
         if pressed_key == 'Left':
-            self.take_a_turn(self.board_matrix)
+            self.take_a_turn()
+            # self.update_board_squares()
+
         if pressed_key == 'Right':
             pass
 
 
-
-class Game:
-
-    def __init__(self, gameboard):
-        self.game = gameboard
-        self.won = False
-        self.lost = False
-
-    def link_keys(self, event):
-        pressed_key = event.keysym
-        if pressed_key == 'Up':
-            pass
-        if pressed_key == 'Down':
-            pass
-        if pressed_key == 'Left':
-            self.game.take_a_turn(self.game.board_matrix)
-        if pressed_key == 'Right':
-            pass
-
-
-
-
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     board = Board()
     board.choose_random_index()
