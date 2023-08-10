@@ -176,6 +176,7 @@ class Board:
                         can_continue = False
         self.populate_vacant_square()
         self.update_board_squares()
+        self.score_label.config(text=self.score)
 
     def link_keys(self, event):
         pressed_key = event.keysym
