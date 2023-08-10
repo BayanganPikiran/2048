@@ -1,5 +1,4 @@
 # Measurements
-
 TILE_LENGTH = 33
 
 # Playfield
@@ -35,7 +34,38 @@ PLAYFIELD_GRAY = "#DDE6ED"
 FOOTER_GRAY = "#DBDFEA"
 CELL_LT_BLUE = "#ECF9FF"
 
-
-
 LABEL_FONT = ('Helvetica', 16, "bold")
 BUTTON_FONT = ('Helvetica', 14, "bold")
+
+# Square Colors
+
+BACKGROUND_COLORS = {
+    '2': '#F8F0E5',
+    '4': '#EADBC8',
+    '8': '#FFC6AC',
+    '16': '#F79BD3',
+    '32': '#F11A7B',
+    '64': '#F79327',
+    '128': '#F8DE22',
+    '256': '#FFED00',
+    '512': '#82CD47',
+    '1024': '#38E54D',
+    '2048': '#16FF00'
+
+}
+
+
+FONT_COLORS = {
+    '2': '#191825',
+    '4': '#191825',
+    '8': '#00F5FF',
+    '16': '#00F5FF',
+    '32': '#C0FEFC',
+    '64': '#C0FEFC',
+    '128': '#F2F4FB',
+    '256': '#F2F4FB',
+    '512': '#FCFCFC',
+    '1024': '#FCFCFC',
+    '2048': '#FFFFFF'
+
+}
