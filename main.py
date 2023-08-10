@@ -43,6 +43,8 @@ class Board:
                 rows.append(tile)
             self.board_squares.append(rows)
 
+        self.root.bind('<Key>', self.link_keys)
+
     # ----------------------------- Frames ------------------------------- #
     def create_game_frame(self):
         game_frame = tk.Frame(self.root, width=PLAY_WIDTH, height=PLAY_HEIGHT, bg=PLAYFIELD_GRAY)
@@ -168,14 +170,50 @@ class Board:
                         self.compress_matrix(mx)
                     else:
                         can_continue = False
+        self.populate_vacant_square()
+
+    def link_keys(self, event):
+        pressed_key = event.keysym
+        if pressed_key == 'Up':
+            pass
+        if pressed_key == 'Down':
+            pass
+        if pressed_key == 'Left':
+            self.take_a_turn(self.board_matrix)
+        if pressed_key == 'Right':
+            pass
+
+
+
+class Game:
+
+    def __init__(self, gameboard):
+        self.game = gameboard
+        self.won = False
+        self.lost = False
+
+    def link_keys(self, event):
+        pressed_key = event.keysym
+        if pressed_key == 'Up':
+            pass
+        if pressed_key == 'Down':
+            pass
+        if pressed_key == 'Left':
+            self.game.take_a_turn(self.game.board_matrix)
+        if pressed_key == 'Right':
+            pass
+
+
+
 
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     board = Board()
-    # board.choose_random_index()
-    # board.start_with_two()
-    board.take_a_turn(sample_matrix_3)
+    board.choose_random_index()
+    board.start_with_two()
+
+    # board.take_a_turn(sample_matrix_3)
     board.root.mainloop()
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
