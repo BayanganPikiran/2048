@@ -136,13 +136,15 @@ class Board:
 
     def transpose_matrix(self):
         tp_matrix = np.transpose(self.board_matrix).tolist()
+        self.board_matrix = np.transpose(self.board_matrix).tolist()
         print(f"This is the matrix: {self.board_matrix}")
         print(f"This is the transposed matrix: {tp_matrix}")
 
     def reverse_matrix(self):
         r_matrix = np.flip(self.board_matrix).tolist()
+        self.board_matrix = np.flip(self.board_matrix).tolist()
         print(f"This is the matrix: {self.board_matrix}")
-        print(f"This is the transposed matrix: {r_matrix}")
+        print(f"This is the reversed matrix: {r_matrix}")
 
     def merge_cells(self):
         print(f"This is the starting matrix: {self.board_matrix}")
@@ -152,6 +154,7 @@ class Board:
                     self.board_matrix[i][j] *= 2
                     self.board_matrix[i][j + 1] = 0
                     self.score += self.board_matrix[i][j]
+        self.score_label.config(text=self.score)
         print(f"This is the new matrix: {self.board_matrix}")
         print(f"This is the new score: {self.score}")
 
@@ -164,7 +167,7 @@ class Board:
                     return False
 
     def take_a_turn(self):
-        self.compress_matrix()
+        # self.compress_matrix()
         can_continue = True
         while can_continue:
             for i in range(4):
@@ -174,21 +177,40 @@ class Board:
                         self.compress_matrix()
                     else:
                         can_continue = False
-        self.populate_vacant_square()
-        self.update_board_squares()
+        # self.populate_vacant_square()
+        # self.update_board_squares()
         self.score_label.config(text=self.score)
 
     def link_keys(self, event):
         pressed_key = event.keysym
         if pressed_key == 'Up':
-            pass
+            self.transpose_matrix()
+            self.compress_matrix()
+            self.merge_cells()
+            self.transpose_matrix()
+            self.populate_vacant_square()
+            self.update_board_squares()
         if pressed_key == 'Down':
-            pass
+            self.transpose_matrix()
+            self.reverse_matrix()
+            self.compress_matrix()
+            self.merge_cells()
+            self.transpose_matrix()
+            self.reverse_matrix()
+            self.populate_vacant_square()
+            self.update_board_squares()
         if pressed_key == 'Left':
-            self.take_a_turn()
-            # self.update_board_squares()
-
+            self.compress_matrix()
+            self.merge_cells()
+            self.populate_vacant_square()
+            self.update_board_squares()
         if pressed_key == 'Right':
+            self.reverse_matrix()
+            self.compress_matrix()
+            self.merge_cells()
+            self.reverse_matrix()
+            self.populate_vacant_square()
+            self.update_board_squares()
             pass
 
 
