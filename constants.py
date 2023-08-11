@@ -40,6 +40,7 @@ BUTTON_FONT = ('Helvetica', 14, "bold")
 # Square Colors
 
 BACKGROUND_COLORS = {
+
     '2': '#F8F0E5',
     '4': '#EADBC8',
     '8': '#FFC6AC',
@@ -50,15 +51,17 @@ BACKGROUND_COLORS = {
     '256': '#FFED00',
     '512': '#82CD47',
     '1024': '#38E54D',
-    '2048': '#16FF00'
+    '2048': '#16FF00',
+    '0': '#ECF9FF'
 
 }
 
 
 FONT_COLORS = {
+
     '2': '#191825',
     '4': '#191825',
-    '8': '#00F5FF',
+    '8': '#068FFF',
     '16': '#00F5FF',
     '32': '#C0FEFC',
     '64': '#C0FEFC',
@@ -66,6 +69,7 @@ FONT_COLORS = {
     '256': '#F2F4FB',
     '512': '#FCFCFC',
     '1024': '#FCFCFC',
-    '2048': '#FFFFFF'
+    '2048': '#FFFFFF',
+    '0': '#ECF9FF'
 
 }

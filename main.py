@@ -88,6 +88,10 @@ class Board:
     def draw_to_board(self, row, col, value):
         self.board_squares[row][col].config(text=value)
 
+    def color_squares(self, row, col, value):
+        self.board_squares[row][col].config(bg=BACKGROUND_COLORS.get(str(value)), fg=FONT_COLORS.get(str(value)))
+
+
     def populate_vacant_square(self):
         # replaces matrix 0 with 2 or 4 and draws value to corresponding board location
         rand_ind = self.choose_random_index()
@@ -102,14 +106,17 @@ class Board:
     def start_with_two(self):
         for i in range(2):
             self.populate_vacant_square()
+            self.update_board_squares()
 
     def update_board_squares(self):
         for i in range(4):
             for j in range(4):
                 if self.board_matrix[i][j] == 0:
                     self.draw_to_board(i, j, ' ')
+                    self.color_squares(i, j, 0)
                 else:
                     self.draw_to_board(i, j, self.board_matrix[i][j])
+                    self.color_squares(i, j, self.board_matrix[i][j])
 
     # ------------------------ Movement Configuration ------------------------- #
 
@@ -211,7 +218,7 @@ class Board:
             self.reverse_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
-            pass
+
 
 
 if __name__ == '__main__':
