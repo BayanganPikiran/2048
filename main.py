@@ -91,7 +91,6 @@ class Board:
     def color_squares(self, row, col, value):
         self.board_squares[row][col].config(bg=BACKGROUND_COLORS.get(str(value)), fg=FONT_COLORS.get(str(value)))
 
-
     def populate_vacant_square(self):
         # replaces matrix 0 with 2 or 4 and draws value to corresponding board location
         rand_ind = self.choose_random_index()
@@ -165,28 +164,16 @@ class Board:
         print(f"This is the new matrix: {self.board_matrix}")
         print(f"This is the new score: {self.score}")
 
-    def can_merge(self, matrix):
-        can_merge = True
-        matrix = mx
+    def can_merge(self):
         for i in range(4):
             for j in range(3):
-                if mx[i][j] != mx[i][j + 1]:
-                    return False
-
-    def take_a_turn(self):
-        # self.compress_matrix()
-        can_continue = True
-        while can_continue:
-            for i in range(4):
-                for j in range(3):
-                    if self.board_matrix[i][j] == self.board_matrix[i][j + 1]:
-                        self.merge_cells()
-                        self.compress_matrix()
-                    else:
-                        can_continue = False
-        # self.populate_vacant_square()
-        # self.update_board_squares()
-        self.score_label.config(text=self.score)
+                if self.board_matrix[i][j] == self.board_matrix[i][j + 1]:
+                    return True
+        for i in range(3):
+            for j in range(4):
+                if self.board_matrix[i][j]  == self.board_matrix[i + 1][j]:
+                    return True
+        return False
 
     def link_keys(self, event):
         pressed_key = event.keysym
@@ -218,7 +205,6 @@ class Board:
             self.reverse_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
-
 
 
 if __name__ == '__main__':
