@@ -2,7 +2,6 @@ import random
 import tkinter as tk
 from constants import *
 import numpy as np
-from tkinter import messagebox
 
 
 
@@ -36,6 +35,8 @@ class Board:
             self.board_squares.append(rows)
 
         self.root.bind('<Key>', self.link_keys)
+        self.game_won = False
+        self.game_lost = False
 
     # ----------------------------- Frames ------------------------------- #
     def create_game_frame(self):
@@ -48,7 +49,7 @@ class Board:
         footer.pack(anchor=tk.CENTER, expand=True)
         return footer
 
-    # ------------------------- Labels & Buttons -------------------------- #
+    # ------------------------- Labels/Button/Toplevels -------------------------- #
 
     def create_score_label(self):
         score_label = tk.Label(self.footer_frame, text="Score: 2", width=32, height=1, font=LABEL_FONT)
@@ -65,6 +66,20 @@ class Board:
                                 command=lambda: print("Big fat cock"))
         restart_btn.grid(row=0, column=1, rowspan=2, sticky=tk.E, padx=3, pady=2, ipadx=6, ipady=12)
         return restart_btn
+
+    def create_gameover_toplevel(self):
+        game_over = tk.Toplevel(self.root, width=200, height=200, padx=5, pady=5)
+        game_over.title("Game Over")
+        game_over.wm_transient()
+        game_over_label = tk.Label(game_over, text="Your skills weren't up to snuff.  Try again.")
+        game_over_label.pack(anchor=tk.CENTER, expand=True)
+
+    def you_win_toplevel(self):
+        you_win = tk.Toplevel(self.root, width=200, height=200, padx=5, pady=5)
+        you_win.title("You Win")
+        you_win.wm_transient()
+        you_win_label = tk.Label(you_win, text="You're a bad motherfucker!  You win!")
+        you_win_label.pack(anchor=tk.CENTER, expand=True)
 
     # ------------------------ Matrix Values & Cells ------------------------- #
     def create_board_matrix(self):
@@ -107,7 +122,6 @@ class Board:
                     self.color_squares(i, j, self.board_matrix[i][j])
 
     # ------------------------ Movement Configuration ------------------------- #
-
 
     def compress_matrix(self):
         temp_matrix = [[0] * 4 for x in range(4)]
@@ -181,12 +195,30 @@ class Board:
             self.update_board_squares()
 
     def play_game(self):
+        game_over = False
         self.choose_random_index()
         self.start_with_two()
-        self.root.mainloop()
+        while not game_over:
 
+            flag = 0
+            for i in range(4):
+                for j in range(4):
+                    if self.board_matrix[i][j] == 2048:
+                        flag = 1
+                        break
 
+            if flag == 1:
+                self.game_won = True
+                # make this a toplevel
+                messagebox.showinfo('2048', 'You won!')
+                game_over = True
 
+            if not (flag or self.can_merge()):
+                self.game_lost = True
+                messagebox.showinfo('2048', 'You lost!')
+                game_over = True
+
+            self.root.mainloop()
 
 
 # def restart(board):
@@ -197,4 +229,3 @@ class Board:
 if __name__ == '__main__':
     board = Board()
     board.play_game()
-
