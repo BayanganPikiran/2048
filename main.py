@@ -2,7 +2,7 @@ import random
 import tkinter as tk
 from constants import *
 import numpy as np
-from tkinter import messagebox
+
 
 
 
@@ -69,17 +69,19 @@ class Board:
         return restart_btn
 
     def gameover_toplevel(self):
-        game_over = tk.Toplevel(self.root, width=200, height=200, padx=5, pady=5)
+        game_over = tk.Toplevel(self.root)
+        game_over.geometry('400x50')
         game_over.title("Game Over")
         game_over.wm_transient()
-        game_over_label = tk.Label(game_over, text="Your skills weren't up to snuff.  Try again.")
+        game_over_label = tk.Label(game_over, text="You're a loser.  Go cry!", font=LABEL_FONT)
         game_over_label.pack(anchor=tk.CENTER, expand=True)
 
     def you_win_toplevel(self):
-        you_win = tk.Toplevel(self.root, width=200, height=200, padx=5, pady=5)
+        you_win = tk.Toplevel(self.root)
+        you_win.geometry('500x100')
         you_win.title("You Win")
         you_win.wm_transient()
-        you_win_label = tk.Label(you_win, text="You're a bad motherfucker!  You win!")
+        you_win_label = tk.Label(you_win, text="You're a bad motherfucker!  You win!", font=LABEL_FONT)
         you_win_label.pack(anchor=tk.CENTER, expand=True)
 
     # ------------------------ Matrix Values & Cells ------------------------- #
@@ -151,6 +153,8 @@ class Board:
                     self.score += self.board_matrix[i][j]
         self.score_label.config(text=self.score)
 
+    # ------------------------ Check Continue ------------------------- #
+
     def can_merge_horizontal(self):
         for i in range(4):
             for j in range(3):
@@ -165,6 +169,14 @@ class Board:
                     return True
         return False
 
+    def check_game_over(self):
+        if any(2048 in i for i in self.board_matrix):
+            self.you_win_toplevel()
+        elif not any(0 in i for i in self.board_matrix) and not self.can_merge_vertical()\
+                and not self.can_merge_horizontal():
+            self.gameover_toplevel()
+        else:
+            print("Play on, motherfucker!")
     def link_keys(self, event):
         pressed_key = event.keysym
         if pressed_key == 'Up':
@@ -175,6 +187,7 @@ class Board:
             self.transpose_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
+            self.check_game_over()
         if pressed_key == 'Down':
             self.transpose_matrix()
             self.reverse_matrix()
@@ -184,11 +197,13 @@ class Board:
             self.reverse_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
+            self.check_game_over()
         if pressed_key == 'Left':
             self.compress_matrix()
             self.merge_cells()
             self.populate_vacant_square()
             self.update_board_squares()
+            self.check_game_over()
         if pressed_key == 'Right':
             # problem: doesn't go from far left to far right
             self.reverse_matrix()
@@ -197,32 +212,33 @@ class Board:
             self.reverse_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
+            self.check_game_over()
 
     def play_game(self):
         # game_over = False
         self.choose_random_index()
         self.start_with_two()
         # while not game_over:
-
-        flag = 0
-        for i in range(4):
-            for j in range(4):
-                if self.board_matrix[i][j] == 8:
-                    self.you_win_toplevel()
-                    # flag = 1
-                    # messagebox.showinfo('2048', 'You won!')
-                    # break
-
-        if flag == 1:
-            self.game_won = True
-            # make this a toplevel
-            print('Fuck yeah!')
-            messagebox.showinfo('2048', 'You won!')
-
-        if not (flag or self.can_merge()):
-            self.game_lost = True
-            self.gameover_toplevel()
-            messagebox.showinfo('2048', 'You lost!')
+        #
+        # flag = 0
+        # for i in range(4):
+        #     for j in range(4):
+        #         if self.board_matrix[i][j] == 8:
+        #             self.you_win_toplevel()
+        #             # flag = 1
+        #             # messagebox.showinfo('2048', 'You won!')
+        #             # break
+        #
+        # if flag == 1:
+        #     self.game_won = True
+        #     # make this a toplevel
+        #     print('Fuck yeah!')
+        #     messagebox.showinfo('2048', 'You won!')
+        #
+        # if not (flag or self.can_merge()):
+        #     self.game_lost = True
+        #     self.gameover_toplevel()
+        #     messagebox.showinfo('2048', 'You lost!')
 
         self.root.mainloop()
 
