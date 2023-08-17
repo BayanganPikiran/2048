@@ -2,8 +2,8 @@ import random
 import tkinter as tk
 from constants import *
 import numpy as np
-
-
+import os
+import sys
 
 
 class Board:
@@ -64,7 +64,7 @@ class Board:
 
     def create_restart_btn(self):
         restart_btn = tk.Button(self.footer_frame, text="Restart", width=5, height=1, font=LABEL_FONT,
-                                command=lambda: print("Big fat cock"))
+                                command=self.restart_program)
         restart_btn.grid(row=0, column=1, rowspan=2, sticky=tk.E, padx=3, pady=2, ipadx=6, ipady=12)
         return restart_btn
 
@@ -172,11 +172,12 @@ class Board:
     def check_game_over(self):
         if any(2048 in i for i in self.board_matrix):
             self.you_win_toplevel()
-        elif not any(0 in i for i in self.board_matrix) and not self.can_merge_vertical()\
+        elif not any(0 in i for i in self.board_matrix) and not self.can_merge_vertical() \
                 and not self.can_merge_horizontal():
             self.gameover_toplevel()
         else:
             print("Play on, motherfucker!")
+
     def link_keys(self, event):
         pressed_key = event.keysym
         if pressed_key == 'Up':
@@ -184,6 +185,7 @@ class Board:
             self.transpose_matrix()
             self.compress_matrix()
             self.merge_cells()
+            self.compress_matrix()
             self.transpose_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
@@ -193,6 +195,7 @@ class Board:
             self.reverse_matrix()
             self.compress_matrix()
             self.merge_cells()
+            self.compress_matrix()
             self.transpose_matrix()
             self.reverse_matrix()
             self.populate_vacant_square()
@@ -201,6 +204,7 @@ class Board:
         if pressed_key == 'Left':
             self.compress_matrix()
             self.merge_cells()
+            self.compress_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
             self.check_game_over()
@@ -209,43 +213,24 @@ class Board:
             self.reverse_matrix()
             self.compress_matrix()
             self.merge_cells()
+            self.compress_matrix()
             self.reverse_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
             self.check_game_over()
 
     def play_game(self):
-        # game_over = False
         self.choose_random_index()
         self.start_with_two()
-        # while not game_over:
-        #
-        # flag = 0
-        # for i in range(4):
-        #     for j in range(4):
-        #         if self.board_matrix[i][j] == 8:
-        #             self.you_win_toplevel()
-        #             # flag = 1
-        #             # messagebox.showinfo('2048', 'You won!')
-        #             # break
-        #
-        # if flag == 1:
-        #     self.game_won = True
-        #     # make this a toplevel
-        #     print('Fuck yeah!')
-        #     messagebox.showinfo('2048', 'You won!')
-        #
-        # if not (flag or self.can_merge()):
-        #     self.game_lost = True
-        #     self.gameover_toplevel()
-        #     messagebox.showinfo('2048', 'You lost!')
 
         self.root.mainloop()
 
-
-# def restart(board):
-#     board.root.destroy()
-#     board.play_game()
+    def restart_program(self):
+        """Restarts the current program.
+        Note: this function does not return. Any cleanup action (like
+        saving data) must be done before calling this function."""
+        self.root = sys.executable
+        os.execl(self.root, self.root, *sys.argv)
 
 
 if __name__ == '__main__':
