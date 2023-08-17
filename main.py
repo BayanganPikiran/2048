@@ -2,6 +2,7 @@ import random
 import tkinter as tk
 from constants import *
 import numpy as np
+from tkinter import messagebox
 
 
 
@@ -67,7 +68,7 @@ class Board:
         restart_btn.grid(row=0, column=1, rowspan=2, sticky=tk.E, padx=3, pady=2, ipadx=6, ipady=12)
         return restart_btn
 
-    def create_gameover_toplevel(self):
+    def gameover_toplevel(self):
         game_over = tk.Toplevel(self.root, width=200, height=200, padx=5, pady=5)
         game_over.title("Game Over")
         game_over.wm_transient()
@@ -150,11 +151,14 @@ class Board:
                     self.score += self.board_matrix[i][j]
         self.score_label.config(text=self.score)
 
-    def can_merge(self):
+    def can_merge_horizontal(self):
         for i in range(4):
             for j in range(3):
                 if self.board_matrix[i][j] == self.board_matrix[i][j + 1]:
                     return True
+        return False
+
+    def can_merge_vertical(self):
         for i in range(3):
             for j in range(4):
                 if self.board_matrix[i][j] == self.board_matrix[i + 1][j]:
@@ -195,30 +199,32 @@ class Board:
             self.update_board_squares()
 
     def play_game(self):
-        game_over = False
+        # game_over = False
         self.choose_random_index()
         self.start_with_two()
-        while not game_over:
+        # while not game_over:
 
-            flag = 0
-            for i in range(4):
-                for j in range(4):
-                    if self.board_matrix[i][j] == 2048:
-                        flag = 1
-                        break
+        flag = 0
+        for i in range(4):
+            for j in range(4):
+                if self.board_matrix[i][j] == 8:
+                    self.you_win_toplevel()
+                    # flag = 1
+                    # messagebox.showinfo('2048', 'You won!')
+                    # break
 
-            if flag == 1:
-                self.game_won = True
-                # make this a toplevel
-                messagebox.showinfo('2048', 'You won!')
-                game_over = True
+        if flag == 1:
+            self.game_won = True
+            # make this a toplevel
+            print('Fuck yeah!')
+            messagebox.showinfo('2048', 'You won!')
 
-            if not (flag or self.can_merge()):
-                self.game_lost = True
-                messagebox.showinfo('2048', 'You lost!')
-                game_over = True
+        if not (flag or self.can_merge()):
+            self.game_lost = True
+            self.gameover_toplevel()
+            messagebox.showinfo('2048', 'You lost!')
 
-            self.root.mainloop()
+        self.root.mainloop()
 
 
 # def restart(board):
