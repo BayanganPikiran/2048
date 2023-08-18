@@ -15,7 +15,7 @@ functionality.
 
 In addition to standard board play and score, I've added a high score feature and a restart button.  The game is habit
 forming, and I got tired of closing and restarting the program, so the restart made sense.  I could have allowed for 
-gameplay to continue past reaching a tile of 2048.  Perhaps after I've actually achieving the 2048 tile I'll do so.
+gameplay to continue past reaching a tile of 2048.  Perhaps after I've actually achieved the winning 2048 I'll do so.
 
 I've looked at 2048 examples posted by finer coders than myself and let their approaches run off on me.  If someone out
 there actually does this with mine, I'd be honored.
