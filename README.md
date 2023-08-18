@@ -10,7 +10,7 @@
 - pickle
 
 I have designed the entire program in the Board class.  I could have created an additional class for the gameplay,
-e.g. key movement, starting, restarting, etc., but felt that would ultimately just be fancier clothes than effective
+e.g. key movement, starting, restarting, etc., but felt that would ultimately just be fancy clothes rather than effective
 functionality.
 
 In addition to standard board play and score, I've added a high score feature and a restart button.  The game is habit
