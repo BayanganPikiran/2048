@@ -4,6 +4,7 @@ from constants import *
 import numpy as np
 import os
 import sys
+import pickle
 
 
 class Board:
@@ -23,6 +24,7 @@ class Board:
         self.restart_btn = self.create_restart_btn()
 
         self.score = 0
+        self.hi_score = self.load_hi_score()
 
         self.board_matrix = self.create_board_matrix()
         self.board_squares = []
@@ -53,12 +55,13 @@ class Board:
     # ------------------------- Labels/Button/Toplevels -------------------------- #
 
     def create_score_label(self):
-        score_label = tk.Label(self.footer_frame, text="Score: 2", width=32, height=1, font=LABEL_FONT)
+        score_label = tk.Label(self.footer_frame, text="Score: 0", width=32, height=1, font=LABEL_FONT)
         score_label.grid(row=0, column=0, sticky=tk.W, padx=4, ipady=6, pady=3)
         return score_label
 
     def create_hi_score_label(self):
-        hi_score_label = tk.Label(self.footer_frame, text="High Score: 1", width=32, height=1, font=LABEL_FONT)
+        hi_score_label = tk.Label(self.footer_frame, text=f"High Score: {self.load_hi_score()}", width=32, height=1,
+                                  font=LABEL_FONT)
         hi_score_label.grid(row=1, column=0, sticky=tk.W, padx=4, ipady=6, pady=3)
         return hi_score_label
 
@@ -151,7 +154,28 @@ class Board:
                     self.board_matrix[i][j] *= 2
                     self.board_matrix[i][j + 1] = 0
                     self.score += self.board_matrix[i][j]
-        self.score_label.config(text=self.score)
+        self.score_label.config(text=f"Score: {self.score}")
+
+    # ------------------------ Hi Score ------------------------- #
+
+    def load_hi_score(self):
+        try:
+            with open("h_score.pkl", "rb") as file:
+                h_score = pickle.load(file)
+                return h_score
+        except:
+            h_score = 0
+            return h_score
+
+    def save_hi_score(self, score):
+        with open('h_score.pkl', 'wb') as file:
+            pickle.dump(score, file)
+
+    def update_high_score(self):
+        if self.score > self.hi_score:
+            self.hi_score = self.score
+            self.hi_score_label.config(text=f"High Score: {self.hi_score}")
+            self.save_hi_score(self.score)
 
     # ------------------------ Check Continue ------------------------- #
 
@@ -175,13 +199,10 @@ class Board:
         elif not any(0 in i for i in self.board_matrix) and not self.can_merge_vertical() \
                 and not self.can_merge_horizontal():
             self.gameover_toplevel()
-        else:
-            print("Play on, motherfucker!")
 
     def link_keys(self, event):
         pressed_key = event.keysym
         if pressed_key == 'Up':
-            # problem: doesn't go from bottom to top
             self.transpose_matrix()
             self.compress_matrix()
             self.merge_cells()
@@ -189,6 +210,7 @@ class Board:
             self.transpose_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
+            self.update_high_score()
             self.check_game_over()
         if pressed_key == 'Down':
             self.transpose_matrix()
@@ -200,6 +222,7 @@ class Board:
             self.reverse_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
+            self.update_high_score()
             self.check_game_over()
         if pressed_key == 'Left':
             self.compress_matrix()
@@ -207,9 +230,9 @@ class Board:
             self.compress_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
+            self.update_high_score()
             self.check_game_over()
         if pressed_key == 'Right':
-            # problem: doesn't go from far left to far right
             self.reverse_matrix()
             self.compress_matrix()
             self.merge_cells()
@@ -217,18 +240,17 @@ class Board:
             self.reverse_matrix()
             self.populate_vacant_square()
             self.update_board_squares()
+            self.update_high_score()
             self.check_game_over()
 
+    # ------------------------ Play & Restart ------------------------- #
     def play_game(self):
+        self.load_hi_score()
         self.choose_random_index()
         self.start_with_two()
-
         self.root.mainloop()
 
     def restart_program(self):
-        """Restarts the current program.
-        Note: this function does not return. Any cleanup action (like
-        saving data) must be done before calling this function."""
         self.root = sys.executable
         os.execl(self.root, self.root, *sys.argv)
 
