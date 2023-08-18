@@ -1,3 +1,5 @@
+# 2048
+
 2048 was a lot of fun to build.  The final program implements the following modules/packages/libraries:
 
 - tkinter
@@ -16,6 +18,9 @@ forming, and I got tired of closing and restarting the program, so the restart m
 gameplay to continue past reaching a tile of 2048.  Perhaps after I've actually achieving the 2048 tile I'll do so.
 
 I've looked at 2048 examples posted by finer coders than myself and let their approaches run off on me.  If someone out
-there actually does this with mine, that would be fantastic.
+there actually does this with mine, I'd be honored.
 
 OK, that's it for now.  Live long and prosper.
+
+![2048](https://github.com/BayanganPikiran/2048/assets/118712787/7b459843-b78b-4b45-a4bd-1829bccf5c20)
+
